@@ -14,18 +14,21 @@ node {
         sh "docker build -t flask-alpine:1 ."
     }
     
-    stage ('Qa') {
-      parallel "SonarQube": {
+    parallel(
+        "stage qa":
+        stage ('Qa') {
         def scannerHome = tool 'scanner';
         withSonarQubeEnv('SonarQube') {
             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=flask-alpine -Dsonar.sources=."
         }
       },
-      parallel "CVSScan": {
+      "state cvsscan": 
+        stage('cvsscan'){
         writeFile file: 'anchore_images', text: 'wolfjde/flask-alpine:2603d45'
         anchore name: 'anchore_images'
      }
     }
+    )
     
   
 }
