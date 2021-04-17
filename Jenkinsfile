@@ -26,9 +26,9 @@ node {
         stage('cvsscan'){
         writeFile file: 'anchore_images', text: 'wolfjde/flask-alpine:2603d45'
         anchore name: 'anchore_images'
+
      }
-    }
-    )
-    
+
+    )    
   
 }
